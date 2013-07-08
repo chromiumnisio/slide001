@@ -21,7 +21,7 @@ var PAGES = [
         c.w("var 俺 = {");
         c.w("    '名前': 'Chromium西尾',");
         c.w("    '職業': 'プログラマー',");
-        c.w("    '趣味': [ 'STG', 'プリキュア', 'JavaScript', 'ビール' ],");
+        c.w("    '趣味': [ 'STG', 'JavaScript', 'ビール', 'プリキュア' ],");
         c.w("    'enchant.js歴': '2年'");
         c.w("};");
     },
@@ -77,16 +77,34 @@ var PAGES = [
     },
 
     function(c, b) {
-
+        c.f(40, Color.black);
+        c.w("『爆発』", W*0.5, H*0.2);
+        b.image.draw(core.assets["images/effect0.png"], W*0.5-80*3, H*0.5-16*3, 80*6, 16*6);
     },
 
     function(c, b) {
-        c.f(40, Color.red);
-        c.w("自分だけのゲーム素材が欲しいんだ！");
+        c.f(40, Color.black);
+        c.w("『ビーム』", W*0.5, H*0.2);
+        b.image.draw(core.assets["images/icon0.png"], 0, 48, 128, 16, W*0.5-128*4/2, H*0.5-16*4/2, 128*4, 16*4);
+    },
+
+    function(c, b) {
+        c.f(40, Color.blue);
+        c.w("悪くはない...悪くはないが...");
+    },
+
+    function(c, b) {
+        c.f(50, Color.red);
+        c.w("イマイチ！");
         b.entered = function() {
             kuma.removeEventListener("enterframe", kuma.walkMotion);
             kuma.frame = 3;
         };
+    },
+
+    function(c, b) {
+        c.f(30, Color.red);
+        c.w("カッコイイゲーム素材が欲しい！");
     },
 
     function(c, b) {
@@ -125,11 +143,16 @@ enchant();
 var W = 800*0.8;
 var H = 450*0.8;
 var BOARD_BG;
+var core;
 var kuma;
 
 window.onload = function() {
-    var core = new Core(800, 450);
-    core.preload("images/chara1.png");
+    core = new Core(800, 450);
+    core.preload([
+        "images/chara1.png",
+        "images/effect0.png",
+        "images/icon0.png",
+    ]);
 
     BOARD_BG = (function() {
         var surface = new Surface(W, H);
@@ -154,9 +177,16 @@ window.onload = function() {
             boards.push(b);
         }
 
-        boards[0].x -= 800;
+        var current = ~~location.hash.substring(1);
+        console.log(current);
 
-        var current = 0;
+        for (var i = 0; i < boards.length; i++) {
+            if (i < current) {
+                boards[i].x -= 1600;
+            } else if (i === current) {
+                boards[current].x -= 800;
+            }
+        }
 
         core.on("rightbuttonup", function() {
             if (current >= PAGES.length-1) return;
@@ -167,6 +197,7 @@ window.onload = function() {
             });
 
             current += 1;
+            location.hash = "#" + current;
 
             kuma.scaleX = 1;
         });
@@ -177,6 +208,7 @@ window.onload = function() {
             if (boards[current-1]) boards[current-1].tl.moveBy(800, 0, 15, enchant.Easing.QUAD_EASEINOUT);
             boards[current].tl.moveBy(800, 0, 15, enchant.Easing.QUAD_EASEINOUT);
             current -= 1;
+            location.hash = "#" + current;
 
             kuma.scaleX = -1;
         });
