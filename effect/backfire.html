@@ -1,0 +1,38 @@
+<html>
+<head>
+<script src="../libs/enchant.js"></script>
+<script>
+enchant();
+window.onload = function() {
+    core = new Core(320, 320);
+    core.onload = function() {
+
+        var sprite = new Sprite(320, 40);
+        core.rootScene.addChild(sprite);
+        sprite.image = new Surface(320, 40);
+        var context = sprite.image.context;
+        context.globalCompositeOperation = "lighter";
+
+        for(var x = 320; x >= 0; x--) {
+            var rad = 20 * x/320;
+            var g = context.createRadialGradient(x, 20, 0, x, 20, rad);
+            g.addColorStop(0.0, "rgba(255,255,255,0.2)");
+            g.addColorStop(0.7, "rgba(0,0,255,0.04)");
+            g.addColorStop(1.0, "rgba(0,0,255,0)");
+            context.fillStyle = g;
+            context.fillRect(x-rad, 20-rad, rad*2, rad*2);
+        }
+
+        sprite.on("touchend", function() {
+            window.open(sprite.image.toDataURL());
+        });
+
+    };
+    core.start();
+};
+</script>
+</head>
+<body style="background:black">
+
+</body>
+</html>

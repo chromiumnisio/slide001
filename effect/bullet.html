@@ -1,0 +1,58 @@
+<html>
+<head>
+<script src="../libs/enchant.js"></script>
+<script>
+enchant();
+window.onload = function() {
+    core = new Core(320, 320);
+    core.onload = function() {
+
+        var sprite = new Sprite(32, 32);
+        core.rootScene.addChild(sprite);
+        sprite.image = new Surface(32, 32);
+        var context = sprite.image.context;
+        context.globalCompositeOperation = "lighter";
+
+        var drawParticle = function(x, y, rad) {
+            if (rad <= 0) return;
+
+            var g = context.createRadialGradient(x, y, 0, x, y, rad);
+            g.addColorStop(0.0, "rgba(255, 255, 255, 0.3)");
+            g.addColorStop(1.0, "rgba(  0,   0, 255, 0.0)");
+            context.fillStyle = g;
+            context.fillRect(x-rad, y-rad, rad*2, rad*2);
+        };
+
+        var drawLine = function(sx, sy, length, direction) {
+            for (var i = 0; i < length; i++) {
+                var x = sx + Math.cos(direction) * i;
+                var y = sy + Math.sin(direction) * i;
+                var rad = Math.sin(i / length * Math.PI) * 3;
+                drawParticle(x, y, rad);
+            }
+        };
+
+        sprite.image.clear();
+        drawLine(32, 16, 20, Math.PI-0.4);
+        drawLine(32, 16, 20, Math.PI-0.3);
+        drawLine(32, 16, 20, Math.PI-0.2);
+        drawLine(32, 16, 26, Math.PI-0.1);
+        drawLine(32, 16, 32, Math.PI);
+        drawLine(32, 16, 26, Math.PI+0.1);
+        drawLine(32, 16, 20, Math.PI+0.2);
+        drawLine(32, 16, 20, Math.PI+0.3);
+        drawLine(32, 16, 20, Math.PI+0.4);
+
+        sprite.on("touchend", function() {
+            window.open(sprite.image.toDataURL());
+        });
+
+    };
+    core.start();
+};
+</script>
+</head>
+<body style="background:black">
+
+</body>
+</html>
