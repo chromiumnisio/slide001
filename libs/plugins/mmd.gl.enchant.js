@@ -1,12 +1,25 @@
 /**
  * @fileOverview
  * mmd.gl.enchant.js
- * @version 0.2.0
- * @require enchant.js v0.4.3+
- * @require gl.enchant.js v0.3.5+
+ * @version 0.2.2
+ * @require enchant.js v0.6.3+
+ * @require gl.enchant.js v0.3.7+
  * @author Ubiquitous Entertainment Inc.
  *
  * @description
+ [lang:ja]
+ * MikuMikuDanceのPMDファイルとVMDファイルをgl.enchant.js上で使用できるようにするプラグイン.
+ *
+ * @detail
+ * ファイルの読み込み・パースにMMD.jsのMMD.Model.jsとMMD.Motion.jsを使用します.
+ * シェーダのソースをMMD.VertexShaderSource.jsとMMD.FragmentShaderSource.jsから引用しています.
+ *
+ * MMD.js:
+ * https://github.com/edvakf/MMD.js
+ * MMD.jsについて:
+ * http://edv.sakura.ne.jp/mmd/
+ [/lang]
+ [lang:en]
  * Plugin to allow use of MikuMikuDance PMD and VMD files in gl.enchant.js.
  *
  * @detail
@@ -17,6 +30,7 @@
  * https://github.com/edvakf/MMD.js
  * About MMD.js:
  * http://edv.sakura.ne.jp/mmd/
+ [/lang]
  */
 
 // for MMD.js
@@ -37,26 +51,12 @@ var MMD = {};
      */
     enchant.gl.mmd = {};
 
-    enchant.Core._loadFuncs['pmd'] = function(src, callback) {
-        if (callback == null) {
-            callback = function() {
-            };
-        }
-        var model = new enchant.gl.mmd.MSprite3D(src, function() {
-            enchant.Core.instance.assets[src] = model;
-            callback();
-        });
+    enchant.Core._loadFuncs['pmd'] = function(src, ext, callback, onerror) {
+        return new enchant.gl.mmd.MSprite3D(src, callback, onerror);
     };
 
-    enchant.Core._loadFuncs['vmd'] = function(src, callback) {
-        if (callback == null) {
-            callback = function() {
-            };
-        }
-        var anim = new enchant.gl.mmd.MAnimation(src, function() {
-            enchant.Core.instance.assets[src] = anim;
-            callback();
-        });
+    enchant.Core._loadFuncs['vmd'] = function(src, ext, callback, onerror) {
+        return new enchant.gl.mmd.MAnimation(src, callback, onerror);
     };
 
     /**
@@ -64,7 +64,12 @@ var MMD = {};
      */
     enchant.gl.mmd.MMesh = enchant.Class.create(enchant.gl.Mesh, {
         /**
+         [lang:ja]
+         * MSprite3D用のメッシュオブジェクト.
+         [/lang]
+         [lang:en]
          * MSprite3D mesh object.
+         [/lang]
          * @constructs
          * @extends enchant.gl.Mesh
          */
@@ -169,11 +174,25 @@ var MMD = {};
      */
     enchant.gl.mmd.MSprite3D = enchant.Class.create(enchant.gl.Sprite3D, {
         /**
+         [lang:ja]
+         * PMDファイルに対応したSprite3D.
+         * 引数を渡すと{@link enchant.gl.mmd.MAnimation#loadVmd}が呼び出される.
+         * PMDファイルをプリロードすることでassets内に自動的に生成される.
+         * @param {String} [path] ファイルパス.
+         * @param {Function} [callback] ロード完了時のコールバック関数.
+         * @param {Function} [onerror] ロード失敗時のコールバック関数.
+         [/lang]
+         [lang:en]
          * Sprite3D optimized for PMD files.
+         * By preloading PMD file, it will be set in assets automatically.
+         * @param {String} [path] file path.
+         * @param {Function} [callback] on load callback.
+         * @param {Function} [onerror] on error callback.
+         [/lang]
          * @constructs
          * @extends enchant.gl.Sprite3D
          */
-        initialize: function(path, callback) {
+        initialize: function(path, callback, onerror) {
             enchant.gl.Sprite3D.call(this);
             this.program = enchant.gl.mmd.MMD_SHADER_PROGRAM;
             this.animation = [];
@@ -204,20 +223,31 @@ var MMD = {};
                     }
                 }
             });
-            if (arguments.length === 2) {
-                this.loadPmd(path, callback);
+            if (arguments.length >= 2) {
+                this.loadPmd(path, callback, onerror);
             }
         },
         /**
+         [lang:ja]
+         * アニメーションを追加する.
+         * アニメーションは追加された順に再生されていく.
+         [/lang]
+         [lang:en]
          * Add animation.
          * Animation will be played in the order that it is added.
+         [/lang]
          * @param {enchant.gl.mmd.MAnimation} animation
          */
         pushAnimation: function(animation) {
             this.animation.push({ frame: 0, animation: animation });
         },
         /**
+         [lang:ja]
+         * 追加されたアニメーションを削除する.
+         [/lang]
+         [lang:en]
          * Delete added animation.
+         [/lang]
          */
         clearAnimation: function(animation) {
             this.animation = [];
@@ -318,23 +348,53 @@ var MMD = {};
             }
         },
         /**
-         * Load .pmd files.
+         [lang:ja]
+         * PMDファイルをロードする.
+         * ロード完了時にLOADイベントが発行される.
+         * @param {String} path ファイルパス
+         * @param {Function} [callback] ロード完了時のコールバック.
+         * @param {Function} [onerror] ロード失敗時のコールバック.
+         * @example
+         * // model/miku.pmd を読み込む.
+         * var mk = new MSprite3D();
+         * mk.loadPmd('model/miku.pmd', function() {
+         *     scene.addChild(mk);
+         * });
+         [/lang]
+         [lang:en]
+         * Load PMD files.
+         * Will be dispatched LOAD event when data has loaded.
          * @param {String} path File path
-         * @param {Function} callback Callback function
+         * @param {Function} [callback] onload callback.
+         * @param {Function} [onerror] onerror callback.
          * @example
          * // model/miku.pmd loading.
          * var mk = new MSprite3D();
          * mk.loadPmd('model/miku.pmd', function() {
          *     scene.addChild(mk);
          * });
+         [/lang]
          */
-        loadPmd: function(path, callback) {
+        loadPmd: function(path, callback, onerror) {
             var split = splitPath(path);
             var model = new MMD.Model(split[1], split[2]);
             var that = this;
             this._data = model;
+            callback = callback || function() {};
+            onerror = onerror || function() {};
+            this.addEventListener('load', callback);
+            this.addEventListener('error', onerror);
             model.load(function() {
-                return that._parse(model, callback);
+                var e;
+                try {
+                    that._parse(model);
+                    that.dispatchEvent(new enchant.Event(enchant.Event.LOAD));
+                } catch (err) {
+                    e = new enchant.Event(enchant.Event.ERROR);
+                    e.message = err.message;
+                    enchant.Core.instance.dispatchEvent(e);
+                    that.dispatchEvent(e);
+                }
             });
         },
         set: function(sp) {
@@ -347,11 +407,7 @@ var MMD = {};
             sp._data = this._data;
             return sp;
         },
-        _parse: function(model, callback) {
-            if (typeof callback !== 'function') {
-                callback = function() {
-                };
-            }
+        _parse: function(model) {
             var data;
             var original;
             var params = [ 'ambient', 'diffuse', 'specular', 'shininess', 'alpha', 'face_vert_count', 'edge_flag' ];
@@ -446,8 +502,6 @@ var MMD = {};
                     material.texture = new enchant.gl.Texture(model.directory + '/' + original.texture_file_name);
                 }
             }
-
-            callback(this);
         },
         _applySkeleton: function() {
             var sk = this.skeleton;
@@ -581,25 +635,53 @@ var MMD = {};
     /**
      * @scope enchant.gl.mmd.MAnimation.prototype
      */
-    enchant.gl.mmd.MAnimation = enchant.Class.create({
+    enchant.gl.mmd.MAnimation = enchant.Class.create(enchant.EventTarget, {
         /**
-         * Sprite3D optimized to VMD file.
+         [lang:ja]
+         * VMDファイルに対応したアニメーションクラス.
+         * キャラクターの姿勢とモーフィングのデータが読み込まれる.
+         * 引数を渡すと{@link enchant.gl.mmd.MAnimation#loadVmd}が呼び出される.
+         * VMDファイルをプリロードすることでassets内に自動的に生成される.
+         * @param {String} [path] ファイルパス.
+         * @param {Function} [callback] ロード成功時のコールバック関数.
+         * @param {Function} [onerror] ロード失敗時のコールバック関数.
+         [/lang]
+         [lang:en]
+         * Animation class optimized to VMD file.
          * Character data and morphing are loaded.
+         * By preloading VMD file, it will be set in assets automatically.
          * If argument is delivered {@link enchant.gl.mmd.MAnimation#loadVmd} will be called up.
-         * @param {String} path File path
-         * @param {Function} callback Callback function
+         * @param {String} [path] File path.
+         * @param {Function} [callback] onload callback.
+         * @param {Function} [onerror] onerror callback.
+         [/lang]
          * @constructs
-         * @extends enchant.gl.Sprite3D
+         * @extends enchant.EventTarget
          * @see enchant.gl.mmd.MAnimation#loadVmd
          */
-        initialize: function(path, callback) {
+        initialize: function(path, callback, onerror) {
+            enchant.EventTarget.call(this);
             this.length = -1;
-            if (arguments.length === 2) {
-                this.loadVmd(path, callback);
+            if (arguments.length >= 2) {
+                this.loadVmd(path, callback, onerror);
             }
         },
         /**
-         * Load .vmd file.
+         [lang:ja]
+         * VMDファイルをロードする.
+         * ロード完了時にLOADイベントが発行される.
+         * @param {String} path ファイルパス
+         * @param {Function} callback コールバック関数
+         * @example
+         * // motion/dance.vmd を読み込む.
+         * var dance = new MAnimation();
+         * dance.loadVmd('motion/dance.vmd', function() {
+         *     mk.pushAnimation(dance);
+         * });
+         [/lang]
+         [lang:en]
+         * Load VMD file.
+         * Will be dispatched LOAD event when data has loaded.
          * @param {String} path File path
          * @param {Function} callback Callback function
          * @example
@@ -608,16 +690,31 @@ var MMD = {};
          * dance.loadVmd('motion/dance.vmd', function() {
          *     mk.pushAnimation(dance);
          * });
+         [/lang]
          */
-        loadVmd: function(path, callback) {
+        loadVmd: function(path, callback, onerror) {
             var motion = new MMD.Motion(path);
             var frame;
             var that = this;
+
+            callback = callback || function() {};
+            onerror = onerror || function() {};
+            console.log(this);
+            this.addEventListener('load', callback);
+            this.addEventListener('error', onerror);
             motion.load(function() {
-                that.motions = parseMotion(motion.bone);
-                that.morphs = parseMorph(motion.morph);
-                that._calcLength();
-                callback(that);
+                var e;
+                try {
+                    that.motions = parseMotion(motion.bone);
+                    that.morphs = parseMorph(motion.morph);
+                    that._calcLength();
+                    that.dispatchEvent(new enchant.Event(enchant.Event.LOAD));
+                } catch (err) {
+                    e = new enchant.Event(enchant.Event.ERROR);
+                    e.message = err.message;
+                    enchant.Core.instance.dispatchEvent(e);
+                    that.dispatchEvent(e);
+                }
             });
         },
         bake: function() {
