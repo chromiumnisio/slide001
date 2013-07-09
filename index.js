@@ -21,7 +21,7 @@ var PAGES = [
         c.w("var 俺 = {");
         c.w("    '名前': 'Chromium西尾',");
         c.w("    '職業': 'プログラマー',");
-        c.w("    '趣味': [ 'STG', 'JavaScript', 'ビール', 'プリキュア' ],");
+        c.w("    '趣味': [ 'JavaScript', 'ビール', 'STG', 'プリキュア' ],");
         c.w("    'enchant.js歴': '2年'");
         c.w("};");
     },
@@ -36,7 +36,7 @@ var PAGES = [
         c.w("まずはこいつを見てくれ");
         c.f(16, Color.black);
         c.w("こいつをどう思う？", W*0.8, H*0.6);
-        demo(c, b, 0, "demo0.html");
+        demo(c, b, 0);
     },
 
     function(c, b) {
@@ -120,17 +120,221 @@ var PAGES = [
         c.w("今日は私のやり方をご紹介");
     },
 
+    function(c, b) {
+        c.f(40, Color.green);
+        c.w("chapter1. explosion");
+    },
+
+    function(c, b) {
+        c.f(40, Color.blue);
+        c.w("まずはこちらの動きをご覧ください");
+        demo(c, b, 1);
+    },
+
+    function(c, b) {
+        c.f(30, Color.blue);
+        c.w("TimeLineを使ったアニメーションですね");
+    },
+
+    function(c, b) {
+        c.textAlign = "left";
+        c.f(20, Color.black);
+        c.prevX = W*0.03;
+        c.prevY = 0;
+        c.lineHeight = H*0.1;
+        c.w("sprite.tl");
+        c.f(20, Color.green);
+        c.w("  // 拡大しながら...");
+        c.f(20, Color.black);
+        c.w("  .scaleTo(s, s, 30, enchant.Easing.QUAD_EASEOUT)");
+        c.w("  .and()");
+        c.f(20, Color.green);
+        c.w("  // 移動しながら...");
+        c.f(20, Color.black);
+        c.w("  .moveBy(Math.cos(a)*l, Math.sin(a)*l, 90, enchant.Easing.QUAD_EASEOUT)");
+        c.w("  .and()");
+        c.f(20, Color.green);
+        c.w("  // 消えていく...");
+        c.f(20, Color.black);
+        c.w("  .fadeOut(70);");
+    },
+
+    function(c, b) {
+        c.f(40, Color.blue);
+        c.w("これがなんなの？");
+    },
+
+    function(c, b) {
+        c.f(40, Color.blue);
+        c.w("増やしてみましょう");
+    },
+
+    function(c, b) {
+        c.f(40, Color.blue);
+        c.w("10個");
+        demo(c, b, 2);
+    },
+
+    function(c, b) {
+        c.f(40, Color.blue);
+        c.w("50個");
+        demo(c, b, 3);
+    },
+
+    function(c, b) {
+        c.f(40, Color.blue);
+        c.w("200個");
+        demo(c, b, 4);
+    },
+
+    function(c, b) {
+        c.f(40, Color.red);
+        c.w("うーん？");
+    },
+
+    function(c, b) {
+        c.f(40, Color.blue);
+        c.w("ここで『加算合成』を使ってみましょう");
+        demo(c, b, 5);
+    },
+
+    function(c, b) {
+        c.f(40, Color.red);
+        c.w("爆発っぽくなった！");
+    },
+
+    function(c, b) {
+        c.f(40, Color.blue);
+        c.w("『加算合成』とは？");
+    },
+
+    function(c, b) {
+        c.f(40, Color.blue);
+        c.w("『加算合成』とは", W*0.5, H*0.3);
+        c.w("アルファブレンドの一種", W*0.5, H*0.7);
+    },
+
+    function(c, b) {
+        c.f(40, Color.blue);
+        c.w("デフォルト合成 'source-over'", W*0.5, H*0.2);
+        c.f(40, Color.green);
+        c.w("C = Cs * As + Cd * (1 - As)", W*0.5, H*0.5);
+        c.f(30, Color.black);
+        c.w("後に重ねた色が優先", W*0.5, H*0.8);
+    },
+
+    function(c, b) {
+        c.f(30, Color.black);
+        c.w("半透明！", W*0.5, H*0.1);
+        b.image.context.fillStyle = "black";
+        b.image.context.fillRect(20, 60, W-40, H-120);
+        b.image.context.globalAlpha = 0.5;
+        b.image.draw(core.assets["images/chara1.png"],
+            32*1, 32*0, 32, 32,
+            W*0.5-100-20, H*0.5-100, 200, 200
+        );
+        b.image.draw(core.assets["images/chara1.png"],
+            32*1, 32*0, 32, 32,
+            W*0.5-100, H*0.5-100, 200, 200
+        );
+        b.image.draw(core.assets["images/chara1.png"],
+            32*1, 32*0, 32, 32,
+            W*0.5-100+20, H*0.5-100, 200, 200
+        );
+    },
+
+    function(c, b) {
+        c.f(40, Color.blue);
+        c.w("加算合成 'lighter'", W*0.5, H*0.2);
+        c.f(40, Color.green);
+        c.w("C = Cs * As + Cd * 1", W*0.5, H*0.5);
+        c.f(30, Color.black);
+        c.w("重ねれば重ねるほど明るくなる", W*0.5, H*0.8);
+    },
+
+    function(c, b) {
+        c.f(30, Color.black);
+        c.w("明るく！", W*0.5, H*0.1);
+        b.image.context.fillStyle = "black";
+        b.image.context.fillRect(20, 60, W-40, H-120);
+        b.image.context.globalCompositeOperation = "lighter";
+        b.image.context.globalAlpha = 0.5;
+        b.image.draw(core.assets["images/chara1.png"],
+            32*1, 32*0, 32, 32,
+            W*0.5-100-20, H*0.5-100, 200, 200
+        );
+        b.image.draw(core.assets["images/chara1.png"],
+            32*1, 32*0, 32, 32,
+            W*0.5-100, H*0.5-100, 200, 200
+        );
+        b.image.draw(core.assets["images/chara1.png"],
+            32*1, 32*0, 32, 32,
+            W*0.5-100+20, H*0.5-100, 200, 200
+        );
+    },
+
+    function(c, b) {
+        c.f(40, Color.blue);
+        c.w("Sprite#compositeOperationで設定", W*0.5, H*0.2);
+        c.textAlign = "left";
+        c.f(20, Color.black);
+        c.prevX = W*0.2;
+        c.prevY = H*0.4;
+        c.lineHeight = H*0.1;
+        c.f(20, Color.green);
+        c.w("  // lighterをセット");
+        c.f(20, Color.black);
+        c.w("  sprite.compositeOperation = 'lighter';");
+        demo(c, b, 6);
+    },
+
+    function(c, b) {
+        c.f(40, Color.blue);
+        c.w("ここでさきほどの例");
+        demo(c, b, 5);
+    },
+
+    function(c, b) {
+        c.f(40, Color.blue);
+        c.w("これを → これへ", W*0.5, H*0.3);
+        b.image.draw(core.assets["images/chara1.png"],
+            32*0, 32*0, 32, 20,
+            W*0.5-32*6/2-100, H*0.6-20*6/2, 32*6, 20*6
+        );
+        b.image.draw(core.assets["effect/particle.png"],
+            32*0, 32*0, 32, 32,
+            W*0.5-32*6/2+100, H*0.6-32*6/2, 32*6, 32*6
+        );
+        demo(c, b, 7);
+    },
+
+    function(c, b) {
+        c.f(40, Color.red);
+        c.w("やったー！　爆発できたよー！");
+    },
+
+    function(c, b) {
+        c.f(40, Color.blue);
+        c.w("でもこれはどうやって作るの？", W*0.5, H*0.3);
+        b.image.draw(core.assets["effect/particle.png"],
+            32*0, 32*0, 32, 32,
+            W*0.5-32*6/2, H*0.6-32*6/2, 32*6, 32*6
+        );
+    },
+
     // ポイント1 加算合成
     // ポイント2 グラデーション
     // ポイント3 パクろう
     // 最初はパクリでもいい。むしろ完全再現を目指せ
 ];
 
-var demo = function(context, board, index, url) {
+var demo = function(context, board, index) {
+    context.textAlign = "center";
+    context.textBaseline = "middle";
     context.f(14, Color.blue);
     context.w("demo" + index + ".html", W*0.5, H*0.9, { underline: true });
     board.on("touchend", function() {
-        window.open(url);
+        window.open("demo" + index + ".html");
     });
 };
 
@@ -157,6 +361,7 @@ window.onload = function() {
         "images/chara1.png",
         "images/effect0.png",
         "images/icon0.png",
+        "effect/particle.png",
     ]);
 
     BOARD_BG = (function() {
@@ -172,7 +377,7 @@ window.onload = function() {
     })();
 
     core.onload = function() {
-        
+
         core.rootScene.backgroundColor = "black";
         layer0 = new Group();
         layer1 = new Group();
@@ -259,7 +464,7 @@ var createNew = function(page, x) {
         this.fontSize = size = size || 20;
         color = color || "black";
         this.fillStyle = color;
-        this.font = size + "px 'serif'";
+        this.font = size + "px 'S2G-Uni-font-PRO'";
     };
     board.image.context.prevX = W*0.5;
     board.image.context.prevY = H*0.4;
@@ -279,7 +484,7 @@ var createNew = function(page, x) {
     PAGES[page](board.image.context, board);
 
     board.on("enterframe", function() {
-        this.rotation = Math.sin(this.age*0.2) * 2;
+        this.rotation = Math.sin(this.age*0.2) * 1.5;
     });
 
     layer0.addChild(board);

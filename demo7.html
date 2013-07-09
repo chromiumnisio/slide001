@@ -1,0 +1,41 @@
+<html>
+<head>
+<script src="libs/enchant.js"></script>
+<script>
+window.onload = function() {
+    setTimeout(start, 300);
+};
+var start = function() {
+    enchant();
+    core = new Core(800, 450);
+    core.preload(["effect/particle.png"]);
+    core.onload = function() {
+        scene = core.rootScene;
+        scene.backgroundColor = "black";
+
+        for (var i = 0; i < 200; i++) {
+            sprite = new Sprite(32, 32);
+            sprite.compositeOperation = "lighter";
+            sprite.image = core.assets["effect/particle.png"];
+            sprite.moveTo(400-16, 225-10);
+            sprite.scale(0.1, 0.1);
+            var s = 5 + Math.random() * 5;
+            var a = Math.random() * Math.PI * 2;
+            var l = 30 + Math.random() * 500;
+            sprite.tl
+                .scaleTo(s, s, 30, enchant.Easing.QUAD_EASEOUT)
+                .and()
+                .moveBy(Math.cos(a)*l, Math.sin(a)*l, 90, enchant.Easing.QUAD_EASEOUT)
+                .and()
+                .fadeOut(70);
+
+            scene.addChild(sprite);
+        }
+    };
+    core.start();
+};
+</script>
+</head>
+<body style="background:black;margin:0">
+</body>
+</html>

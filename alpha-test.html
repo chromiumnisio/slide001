@@ -1,0 +1,48 @@
+<html>
+<head>
+<meta charset=UTF-8>
+<script>
+window.onload = function() {
+
+canvas = document.getElementById("c");
+context = canvas.getContext("2d");
+console.log(context.globalCompositeOperation);
+// context.globalCompositeOperation = "source-over";
+context.globalCompositeOperation = "lighter";
+
+context.fillStyle = "rgba(0, 0, 0, 1.0)";
+context.fillRect(0, 0, 200, 200);
+
+data = context.getImageData(75, 75, 1, 1);
+
+context.fillStyle = "rgba(" + ~~(Math.random()*255) + ", 0, 0, " + Math.random() + ")";
+context.fillRect(0, 0, 100, 100);
+
+data = context.getImageData(75, 75, 1, 1);
+console.log("色1", data.data[0]);
+
+SRC_COLOR = 150;
+SRC_ALPHA = 0.7;
+DST_COLOR = data.data[0];
+DST_ALPHA = data.data[3] / 255;
+
+context.fillStyle = "rgba(" + SRC_COLOR + ", 0, 0, " + SRC_ALPHA + ")";
+context.fillRect(50, 50, 100, 100);
+
+data = context.getImageData(75, 75, 1, 1);
+
+console.log("色2", data.data[0]);
+console.log("src-over",
+    Math.min(SRC_COLOR*SRC_ALPHA + DST_COLOR*(1-SRC_ALPHA), 255)
+);
+console.log("lighter",
+    Math.min(SRC_COLOR*SRC_ALPHA + DST_COLOR*1, 255)
+);
+
+};
+</script>
+</head>
+<body>
+<canvas id="c" width="200" height="200"></canvas>
+</body>
+</html>
