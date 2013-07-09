@@ -15,6 +15,7 @@ var start = function() {
         "effect/aura.png",
         "effect/bullet.png",
         "effect/particle.png",
+        "effect/shockwave.png",
     ]);
     core.onload = function() {
         var scene = core.rootScene;
@@ -56,10 +57,10 @@ var start = function() {
 
             if (this.age > 100) {
                 if (this.age % 2 === 0) {
-                    this.shot(5, -15, -0.3);
-                    this.shot(5, -10, -0.15);
-                    this.shot(5,  10,  0.15);
-                    this.shot(5,  15,  0.3);
+                    this.shot(5, -15, -0.2);
+                    this.shot(5, -10, -0.1);
+                    this.shot(5,  10,  0.1);
+                    this.shot(5,  15,  0.2);
                 } else {
                     this.shot(5, Math.sin(this.age*0.4) *  14, 0);
                     this.shot(5, Math.sin(this.age*0.4) * -14, 0);
@@ -69,8 +70,8 @@ var start = function() {
         myship.shot = function(x, y, d) {
             var b = new Sprite(32, 32);
             b.rotation = d * 180/Math.PI;
-            b.scaleX = 4;
-            b.scaleY = 4;
+            b.scaleX = 6;
+            b.scaleY = 2;
             b.image = core.assets["effect/bullet.png"];
             b.on("enterframe", function() {
                 this.x += Math.cos(d) * 40;
@@ -163,19 +164,21 @@ var start = function() {
                             ce[i].frame = 8;
                             ce[i].tl
                             .delay(Math.rand(5, 10)).then(function() {
-                                particle(240, this.x+Math.rand(-40, 40), this.y+Math.rand(-40, 40), 20, 3.0);
+                                particle(240, this.x+this.width/2+Math.rand(-40, 40), this.y+this.height/2+Math.rand(-40, 40), 20, 3.0);
                             })
                             .delay(Math.rand(5, 10)).then(function() {
-                                particle(240, this.x+Math.rand(-40, 40), this.y+Math.rand(-40, 40), 20, 3.0);
+                                particle(240, this.x+this.width/2+Math.rand(-40, 40), this.y+this.height/2+Math.rand(-40, 40), 20, 3.0);
                             })
                             .delay(Math.rand(5, 10)).then(function() {
-                                particle(240, this.x+Math.rand(-40, 40), this.y+Math.rand(-40, 40), 20, 3.0);
+                                particle(240, this.x+this.width/2+Math.rand(-40, 40), this.y+this.height/2+Math.rand(-40, 40), 20, 3.0);
                             })
                             .delay(Math.rand(5, 10)).then(function() {
-                                particle(240, this.x+Math.rand(-40, 40), this.y+Math.rand(-40, 40), 20, 3.0);
+                                particle(240, this.x+this.width/2+Math.rand(-40, 40), this.y+this.height/2+Math.rand(-40, 40), 20, 3.0);
                             })
                             .delay(Math.rand(10, 20)).then(function() {
-                                particle(400, this.x, this.y, 80, 8.0);
+                                particle(400, this.x+this.width/2, this.y+this.height/2, 80, 8.0);
+                                shockwave(this.x+this.width/2, this.y+this.height/2, Math.random()*30);
+                                shockwave(this.x+this.width/2, this.y+this.height/2, 90+Math.random()*30);
                             })
                             .then(function() {
                                 scene.removeChild(this);
@@ -211,7 +214,27 @@ var start = function() {
                 });
                 scene.addChild(p);
             }
-        }
+        };
+
+        var shockwave = function(x, y, rot) {
+            var sw = new Sprite(600, 600);
+            sw.moveTo(x-300, y-300);
+            sw.rotation = rot;
+            sw.image = core.assets["effect/shockwave.png"];
+            sw.scale(0.1, 0.1);
+            sw.tl.tween({
+                scaleX: 0.5,
+                scaleY: 2,
+                time: 40,
+                easing: enchant.Easing.QUAD_EASEOUT,
+            }).and().tween({
+                opacity: 0,
+                time: 40,
+            }).then(function() {
+                scene.removeChild(this);
+            });
+            scene.addChild(sw);
+        };
     };
     core.start();
 };

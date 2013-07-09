@@ -1,0 +1,55 @@
+<html>
+<head>
+<script src="../libs/enchant.js"></script>
+<script>
+Math.randf = function(min, max) { return min + Math.random() * (max - min) };
+enchant();
+
+Surface.prototype.drawParticle = function(x, y, radius, color0, color1) {
+    color0 = color0 || "rgba(255,255,255,1)";
+    color1 = color1 || "rgba(255,255,255,0)";
+
+    var gradient = this.context.createRadialGradient(x, y, 0, x, y, radius);
+    gradient.addColorStop(0.0, color0);
+    gradient.addColorStop(1.0, color1);
+
+    this.context.strokeStyle = "rgba(0,0,0,0)";
+    this.context.fillStyle = gradient;
+    this.context.fillRect(x-radius, y-radius, radius*2, radius*2);
+};
+
+window.onload = function() {
+    var RAD = 300;
+    core = new Core(RAD*2, RAD*2);
+    core.onload = function() {
+
+        var sprite = new Sprite(RAD*2, RAD*2);
+        sprite.image = new Surface(sprite.width, sprite.height);
+        var context = sprite.image.context;
+        context.globalCompositeOperation = "lighter";
+
+        for (var a = 0; a < Math.PI*2; a += 0.002) {
+            var g = context.createRadialGradient(RAD, RAD, 0, RAD, RAD, RAD);
+            g.addColorStop(Math.randf(0.3, 0.8), "rgba(255,255,255,0)");
+            g.addColorStop(0.90, "rgba(255,255,255,0.4)");
+            g.addColorStop(1.00, "rgba(255,255,255,0)");
+            context.strokeStyle = g;
+            context.beginPath();
+            context.moveTo(RAD+Math.cos(a)*RAD, RAD+Math.sin(a)*RAD);
+            context.lineTo(RAD, RAD);
+            context.stroke();
+        }
+
+        core.rootScene.addChild(sprite);
+        sprite.ontouchend = function() {
+            window.open(this.image.toDataURL());
+        };
+    };
+    core.start();
+};
+</script>
+</head>
+<body style="background:black">
+<div id="enchant-stage"></div>
+</body>
+</html>
