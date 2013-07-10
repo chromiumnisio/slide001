@@ -483,9 +483,7 @@ var createNew = function(page, x) {
     };
     PAGES[page](board.image.context, board);
 
-    board.on("enterframe", function() {
-        this.rotation = Math.sin(this.age*0.2) * 1.5;
-    });
+    board.rotation = -5 + Math.random() * 10;
 
     layer0.addChild(board);
 
