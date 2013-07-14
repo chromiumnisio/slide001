@@ -456,8 +456,8 @@ var demo = function(context, board, index) {
     context.textBaseline = "middle";
     context.f(14, Color.blue);
     context.w("demo" + index + ".html", W*0.5, H*0.9, { underline: true });
-    board.on("touchend", function() {
-        window.open("demo" + index + ".html");
+    board.on("touchend", function(e) {
+        if (e.y > H*0.5) window.open("demo" + index + ".html");
     });
 };
 
@@ -630,6 +630,13 @@ var createNew = function(page, x) {
     board.rotation = -4 + Math.random() * 4*2;
 
     layer0.addChild(board);
+
+    board.on("touchend", function(e) {
+        if (e.y > H*0.5) return;
+
+        if (e.x < W*0.5) core.dispatchEvent(new Event("leftbuttonup"));
+        else             core.dispatchEvent(new Event("rightbuttonup"));
+    });
 
     return board;
 };

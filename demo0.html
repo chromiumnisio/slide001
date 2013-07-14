@@ -61,8 +61,8 @@ var start = function() {
 
             if (this.age > 100) {
                 if (this.age % 2 === 0) {
-                    this.shot(5, Math.sin(this.age*0.4) *  40, 0);
-                    this.shot(5, Math.sin(this.age*0.4) * -40, 0);
+                    this.shot(5, Math.sin(this.age*0.4) *  20, 0);
+                    this.shot(5, Math.sin(this.age*0.4) * -20, 0);
                 } else {
                     this.shot(5, -30, -0.1);
                     this.shot(5,  30,  0.1);
@@ -145,7 +145,7 @@ var start = function() {
                 var idx = enemies.indexOf(this);
                 if (idx !== -1) enemies.splice(idx, 1);
             });
-            e.hp = 30;
+            e.hp = 50;
             e.cx = function() { return this.x+this.width/2 };
             e.cy = function() { return this.y+this.height/2 };
             scene.addChild(e);
@@ -226,7 +226,7 @@ var start = function() {
                     this.vx *= 0.9;
                     this.vy *= 0.9;
                     // 透明度
-                    this.opacity *= 0.95
+                    this.opacity *= 0.8;
                     if (this.opacity < 0.001) {
                         scene.removeChild(this);
                     }
