@@ -1,5 +1,6 @@
 <html>
 <head>
+<meta charset=UTF-8>
 <script src="libs/enchant.js"></script>
 <script>
 window.onload = function() {
@@ -15,7 +16,10 @@ var start = function() {
 
         for (var i = 0; i < 200; i++) {
             sprite = new Sprite(32, 20);
+
+            // 『加算合成』を使う
             sprite.compositeOperation = "lighter";
+
             sprite.image = core.assets["images/chara1.png"];
             sprite.moveTo(400-16, 225-10);
             sprite.scale(0.1, 0.1);

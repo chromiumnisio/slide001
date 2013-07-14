@@ -1,5 +1,6 @@
 <html>
 <head>
+<meta charset=UTF-8>
 <script src="libs/enchant.js"></script>
 <script>
 window.onload = function() {
@@ -8,7 +9,7 @@ window.onload = function() {
 var start = function() {
     enchant();
 
-    Kuma = Class.create(Sprite, {
+    var Kuma = Class.create(Sprite, {
         initialize: function(t, x) {
             Sprite.call(this, 32, 32);
             this.opacity = 0.2;
@@ -17,7 +18,7 @@ var start = function() {
             this.frame = t+~~(Math.random() * 4);
             var a = Math.random() * Math.PI * 2;
             this.moveTo(Math.cos(a) * 500 + 400, Math.sin(a) * 500 + 225);
-            this.tl.moveTo(x, 225, 30);
+            this.tl.moveTo(x, 225, 50, enchant.Easing.BACK_EASEOUT);
         }
     });
 
@@ -28,13 +29,15 @@ var start = function() {
         core.rootScene.on("enterframe", function() {
             if (this.age % 5 !== 0) return;
 
-            var s = new Kuma(0, 400-200);
-            s.compositeOperation = "source-over";
-            this.addChild(s);
+            // くま夫
+            var s0 = new Kuma(0, 400-200);
+            s0.compositeOperation = "source-over";
+            this.addChild(s0);
 
-            var s = new Kuma(10,400+200);
-            s.compositeOperation = "lighter";
-            this.addChild(s);
+            // くま子
+            var s1 = new Kuma(10,400+200);
+            s1.compositeOperation = "lighter";
+            this.addChild(s1);
 
         });
 

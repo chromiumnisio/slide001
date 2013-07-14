@@ -1,0 +1,77 @@
+<html>
+<head>
+<script src="libs/enchant.js"></script>
+<script>
+window.onload = function() {
+    setTimeout(start, 300);
+};
+var start = function() {
+    enchant();
+    core = new Core(400, 400);
+    core.onload = function() {
+
+        var sprite = new Sprite(core.width, core.height);
+        core.rootScene.addChild(sprite);
+        sprite.image = new Surface(core.width, core.height);
+        var context = sprite.image.context;
+        context.globalCompositeOperation = "lighter";
+
+        var drawEffect = function(count) {
+            for (var c = 0; c < count; c++) {
+                var g = context.createRadialGradient(
+                    core.width/2, core.height/2, 0,
+                    core.width/2, core.height/2, core.width/2
+                );
+                g.addColorStop(0.0, "rgba(255,255,255,0.1)");
+                // g.addColorStop(0.4, "rgba(  0,  0,255,0.1)");
+                g.addColorStop(1.0, "rgba(  0,  0,255,0.0)");
+                context.fillStyle = g;
+                context.beginPath();
+
+                var cx = core.width/2 + (-2 + Math.random() * 4);
+                var cy = core.height/2 + (-2 + Math.random() * 4);
+                var rad = core.width/2 * (0.5 + Math.random() * 0.4);
+                var oa = Math.random() * 0.3;
+                // var oa = 0;
+                var ir = 0.3 + Math.random() * 0.4;
+                var dv = 32;
+                context.moveTo(Math.cos(oa) * rad + cx, Math.sin(oa) * rad + cy);
+                for (var i = 0; i < dv; i++) {
+                    var angle = Math.PI*2 / dv * i + oa;
+                    context.lineTo(Math.cos(angle) * rad + cx, Math.sin(angle) * rad + cy);
+                    angle += Math.PI*2 / (dv*2);
+                    context.lineTo(Math.cos(angle) * rad*ir + cx, Math.sin(angle) * rad*ir + cy);
+                }
+                context.closePath();
+                context.fill();
+            }
+        };
+
+        var SX = 2;
+        var SY = 2;
+        var out = new Surface(sprite.width * SX, sprite.height * SY);
+        for (var y = 0; y < SY; y++) {
+            for (var x = 0; x < SX; x++) {
+                sprite.image.clear();
+                drawEffect(30);
+                out.draw(sprite.image, sprite.width * x, sprite.height * y);
+            }
+        }
+
+        sprite.on("touchend", function() {
+            window.open(out.toDataURL());
+        });
+
+        sprite.image = out;
+        sprite.on("enterframe", function() {
+            this.frame += 1;
+        });
+    };
+    core.start();
+};
+</script>
+</head>
+<body style="background:black">
+<div id="enchant-stage"></div>
+</body>
+</html>

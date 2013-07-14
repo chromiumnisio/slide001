@@ -1,5 +1,6 @@
 <html>
 <head>
+<meta charset=UTF-8>
 <script src="libs/enchant.js"></script>
 <script>
 Math.rand = function(min, max) { return min + Math.random() * (max-min) };
@@ -190,7 +191,7 @@ var start = function() {
                                     explode(50, this.cx()+Math.rand(-40, 40), this.cy()+Math.rand(-40, 40), 15, 2.0);
                                 })
                                 .delay(Math.rand(15, 30)).then(function() {
-                                    explode(400, this.cx(), this.cy(), 80, 8.0);
+                                    explode(400, this.cx(), this.cy(), 120, 8.0);
                                     shockwave(this.cx(), this.cy(), Math.rand( 0,  30));
                                     shockwave(this.cx(), this.cy(), Math.rand(90, 120));
                                     for (var i=0; i<thunders.length; i++) {
@@ -224,7 +225,8 @@ var start = function() {
                     this.y += this.vy;
                     this.vx *= 0.9;
                     this.vy *= 0.9;
-                    this.opacity *= 0.8;
+                    // 透明度
+                    this.opacity *= 0.95
                     if (this.opacity < 0.001) {
                         scene.removeChild(this);
                     }

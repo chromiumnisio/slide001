@@ -1,0 +1,44 @@
+<html>
+<head>
+<script src="libs/enchant.js"></script>
+<script>
+window.onload = function() {
+    setTimeout(start, 300);
+};
+var start = function() {
+    enchant();
+    core = new Core(320, 320);
+    core.onload = function() {
+
+        var sprite = new Sprite(core.width, core.height);
+        core.rootScene.addChild(sprite);
+
+        sprite.image = new Surface(sprite.width, sprite.height);
+
+        var context = sprite.image.context;
+
+        // 円形グラデーション
+        var gradient = context.createRadialGradient(
+            sprite.width/2, sprite.height/2, 0,
+            sprite.width/2, sprite.height/2, sprite.width/2
+        );
+        gradient.addColorStop(0.0, "rgba(255,255,255,0.6)"); // 中心色
+        gradient.addColorStop(0.5, "rgba(255,255,  0,0.3)");
+        gradient.addColorStop(1.0, "rgba(255,  0,  0,0.0)"); // 外縁色
+        context.fillStyle = gradient;
+        context.fillRect(0, 0, sprite.width, sprite.height);
+
+        // タッチしたら画像を新しいウィンドウで開く
+        sprite.on("touchend", function() {
+            window.open(sprite.image.toDataURL());
+        });
+
+    };
+    core.start();
+};
+</script>
+</head>
+<body style="background:black">
+
+</body>
+</html>

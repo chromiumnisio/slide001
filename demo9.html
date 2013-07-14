@@ -1,0 +1,70 @@
+<html>
+<head>
+<script src="libs/enchant.js"></script>
+<script>
+window.onload = function() {
+    setTimeout(start, 300);
+};
+var start = function() {
+    enchant();
+    core = new Core(160, 240);
+    core.onload = function() {
+
+        var sprite = new Sprite(core.width, core.height);
+        core.rootScene.addChild(sprite);
+        sprite.image = new Surface(core.width, core.height);
+        var context = sprite.image.context;
+        context.globalCompositeOperation = "lighter";
+
+        var drawParticle = function(x, y, rad) {
+            if (rad <= 0) return;
+
+            var g = context.createRadialGradient(x, y, 0, x, y, rad);
+            g.addColorStop(0.0, "rgba(255, 255, 255, 0.6)");
+            g.addColorStop(0.5, "rgba(  0,  50, 255, 0.1)");
+            g.addColorStop(1.0, "rgba(  0,   0, 255, 0.0)");
+            context.fillStyle = g;
+            context.fillRect(x-rad, y-rad, rad*2, rad*2);
+        };
+
+        var drawLine = function(sx, sy, length, direction) {
+            for (var i = 0; i < length; i++) {
+                var x = sx + Math.cos(direction) * i - (i*i)*0.02;
+                var y = sy + Math.sin(direction) * i;
+                var rad = Math.sin(i / length * Math.PI) * core.width*0.1;
+                drawParticle(x, y, rad);
+            }
+        };
+
+        var SX = 8;
+        var SY = 8;
+        var out = new Surface(sprite.width * SX, sprite.height * SY);
+        for (var y = 0; y < SY; y++) {
+            for (var x = 0; x < SX; x++) {
+                sprite.image.clear();
+                for (var i = -1.2; i <= 1.2; i += 0.1) {
+                    drawLine(core.width-10, core.height/2,
+                        core.width*0.4-Math.abs(i)*core.width*0.4 * (0.1+Math.random()*0.4),
+                        Math.PI+i);
+                }
+                out.draw(sprite.image, sprite.width * x, sprite.height * y);
+            }
+        }
+
+        sprite.on("touchend", function() {
+            window.open(out.toDataURL());
+        });
+
+        sprite.image = out;
+        sprite.on("enterframe", function() {
+            this.frame += 1;
+        });
+    };
+    core.start();
+};
+</script>
+</head>
+<body style="background:black">
+
+</body>
+</html>
