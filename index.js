@@ -4,7 +4,7 @@ var PAGES = [
         c.f(40, Color.blue);
         c.w("自分だけのエフェクト素材を作ろう！");
         c.f(20, Color.black);
-        c.w("2013年7月7日 enchant.js 勉強会", W*0.5, H*0.9);
+        c.w("2013年7月17日 enchant.js 勉強会", W*0.5, H*0.9);
     },
 
     function(c) {
