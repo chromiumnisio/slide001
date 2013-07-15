@@ -20,21 +20,21 @@ var start = function() {
             for (var c = 0; c < count; c++) {
                 var g = context.createRadialGradient(
                     core.width/2, core.height/2, 0,
-                    core.width/2, core.height/2, core.width/2
+                    core.width/2, core.height/2, core.width/2*(0.7+Math.random()*0.3)
                 );
                 g.addColorStop(0.0, "rgba(255,255,255,0.1)");
-                // g.addColorStop(0.4, "rgba(  0,  0,255,0.1)");
+                g.addColorStop(0.3, "rgba(255,255,255,0.1)");
                 g.addColorStop(1.0, "rgba(  0,  0,255,0.0)");
                 context.fillStyle = g;
                 context.beginPath();
 
-                var cx = core.width/2 + (-2 + Math.random() * 4);
-                var cy = core.height/2 + (-2 + Math.random() * 4);
-                var rad = core.width/2 * (0.5 + Math.random() * 0.4);
-                var oa = Math.random() * 0.3;
+                var cx = core.width/2 + (-4 + Math.random() * 8);
+                var cy = core.height/2 + (-4 + Math.random() * 8);
+                var rad = core.width/2 * (0.9 + Math.random() * 0.2);
+                var oa = Math.random() * 0.1;
                 // var oa = 0;
-                var ir = 0.3 + Math.random() * 0.4;
-                var dv = 32;
+                var ir = 0.4 + Math.random() * 0.4;
+                var dv = 30;
                 context.moveTo(Math.cos(oa) * rad + cx, Math.sin(oa) * rad + cy);
                 for (var i = 0; i < dv; i++) {
                     var angle = Math.PI*2 / dv * i + oa;

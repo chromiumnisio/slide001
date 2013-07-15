@@ -371,8 +371,8 @@ var PAGES = [
         c.textBaseline = "middle";
         c.f(14, Color.blue);
         c.w("爆発くん", W*0.5, H*0.9, { underline: true });
-        b.on("touchend", function() {
-            window.open("http://jsrun.it/daishi.hmr/scAh");
+        b.on("touchend", function(e) {
+            if (e.y > H*0.5) window.open("http://jsrun.it/daishi.hmr/scAh");
         });
     },
 
@@ -442,6 +442,11 @@ var PAGES = [
         c.w("一点から放射状にパーティクルを移動させ軌跡を描画", W*0.5, H*0.1);
         c.w("サイズ小→大→小", W*0.5, H*0.2);
         b.image.draw(core.assets["demo9_2.png"], W*0.5-960/2*0.4, H*0.6-720/2*0.4, 960*0.4, 720*0.4);
+    },
+
+    function(c, b) {
+        c.f(40, Color.red);
+        c.w("まとめ");
     },
 
 
