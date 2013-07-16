@@ -2,24 +2,18 @@
 <head>
 <script>
 window.onload = function() {
-    var cosineInterpolation = function(a, b, ratio) {
-        var f = (1 - Math.cos(ratio*Math.PI)) * 0.5;
-        return a*(1-f) + b*f;
-    };
-
     var canvas = document.getElementById("canvas");
     canvas.width = 2000;
     canvas.height = 1000;
     var context = canvas.getContext("2d");
-
     var particle = function(color, x, y, radius) {
+        context.globalCompositeOperation = "lighter";
         var g = context.createRadialGradient(x, y, 0, x, y, radius);
         g.addColorStop(0, "rgba(255,255,255," + color[3] + ")");
         g.addColorStop(1, "rgba(" + ~~color[0] + "," + ~~color[1] + "," + ~~color[2] + ",0.0)");
         context.fillStyle = g;
         context.fillRect(x - radius, y - radius, radius*2, radius*2);
     };
-
     var line = function(color, x0, y0, x1, y1) {
         context.strokeStyle = color;
         context.beginPath();
@@ -27,7 +21,6 @@ window.onload = function() {
         context.lineTo(x1, y1);
         context.stroke();
     }
-
     var showData = function(color, data) {
         for (var i = 0; i < data.length-1; i++) {
             line(color, i, data[i]*500, i+1, data[i+1]*500);
@@ -35,6 +28,10 @@ window.onload = function() {
     };
 
     var noise = function(dataSize) {
+        var cosineInterpolation = function(a, b, ratio) {
+            var f = (1 - Math.cos(ratio*Math.PI)) * 0.5;
+            return a*(1-f) + b*f;
+        };
         var createData = function(interval) {
             if (interval < 1) { 
                 return null;
@@ -52,27 +49,22 @@ window.onload = function() {
             return data;
         };
 
-        var datas = [];
+        var layers = [];
         for (var i = 0, b = 2; i < 10; i++, b *= 2) {
-            var data = createData(dataSize / b);
-            if (data === null) {
+            var d = createData(dataSize / b);
+            if (d === null) {
                 break;
             }
-            datas.push(data);
+            layers.push(d);
         }
 
-        var finalData = [].concat(datas[0]);
-        for (var i = 0, b = 1; i < datas.length; i++, b *= 0.5) {
+        var result = [].concat(layers[0]);
+        for (var i = 0, b = 1; i < layers.length; i++, b *= 0.5) {
             for (var j = 0; j < dataSize; j++) {
-                finalData[j] += datas[i][j] * b;
+                result[j] += layers[i][j] * b / 3;
             }
         }
-
-        for (var i = 0; i < finalData.length; i++) {
-            finalData[i] /= 3;
-        }
-
-        return finalData;
+        return result;
     };
 
     var data = noise(360);
@@ -86,7 +78,6 @@ window.onload = function() {
         };
     }
 
-    context.globalCompositeOperation = "lighter";
     window.setInterval(function() {
         context.clearRect(0, 0, canvas.width, canvas.height);
         for (var i = 0; i < p.length; i++) {
