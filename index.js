@@ -96,18 +96,18 @@ var PAGES = [
     function(c, b) {
         c.f(70, Color.red);
         c.w("イマイチ...");
-        b.entered = function() {
-            kuma.removeEventListener("enterframe", kuma.walkMotion);
-            kuma.frame = 3;
+        b.onentered = function() {
+            timer.removeEventListener("enterframe", timer.walkMotion);
+            timer.frame = 5;
+        };
+        b.onexit = function() {
+            timer.on("enterframe", timer.walkMotion);
         };
     },
 
     function(c, b) {
         c.f(30, Color.red);
         c.w("カッコイイエフェクト素材が欲しい！");
-        b.entered = function() {
-            kuma.on("enterframe", kuma.walkMotion);
-        };
     },
 
     function(c, b) {
@@ -367,13 +367,7 @@ var PAGES = [
     function(c, b) {
         c.f(40, Color.blue);
         c.w("たくさん描いてスプライトシートにする");
-        c.textAlign = "center";
-        c.textBaseline = "middle";
-        c.f(14, Color.blue);
-        c.w("爆発くん", W*0.5, H*0.9, { underline: true });
-        b.on("touchend", function(e) {
-            if (e.y > H*0.5) window.open("http://jsrun.it/daishi.hmr/scAh");
-        });
+        link(c, b, "http://jsrun.it/daishi.hmr/scAh");
     },
 
     function(c, b) {
@@ -449,20 +443,48 @@ var PAGES = [
         c.w("まとめ");
     },
 
+    function(c, b) {
+        c.f(30, Color.blue);
+        c.prevY = 0;
+        c.lineHeight = H*0.25;
+        c.w("1. プログラムで描いて素材を作ろう！");
+        c.w("2. 作った素材は加算合成を使って表示しよう！");
+        c.w("3. たくさん作ってゲームをカッコよくしよう！");
+    },
 
-    // ポイント1 加算合成
-    // ポイント2 グラデーション
-    // ポイント3 パクろう
-    // 最初はパクリでもいい。むしろ完全再現を目指せ
+    function(c, b) {
+        c.f(40, Color.green);
+        c.w("thank you!");
+        b.onentered = function() {
+            timer.removeEventListener("enterframe", timer.walkMotion);
+            timer.frame = 7;
+            timer.tl
+                .moveBy(0, -200, 5, enchant.Easing.QUAD_EASEOUT)
+                .moveBy(0, +200, 5, enchant.Easing.QUAD_EASEIN)
+                .moveBy(0, -200, 5, enchant.Easing.QUAD_EASEOUT)
+                .moveBy(0, +200, 5, enchant.Easing.QUAD_EASEIN)
+                .moveBy(0, -200, 5, enchant.Easing.QUAD_EASEOUT)
+                .moveBy(0, +200, 5, enchant.Easing.QUAD_EASEIN)
+            ;
+        };
+        b.onexit = function() {
+            timer.on("enterframe", timer.walkMotion);
+        };
+    },
+
 ];
 
 var demo = function(context, board, index) {
+    link(context, board, "demo" + index + ".html");
+};
+
+var link = function(context, board, url) {
     context.textAlign = "center";
     context.textBaseline = "middle";
     context.f(14, Color.blue);
-    context.w("demo" + index + ".html", W*0.5, H*0.9, { underline: true });
+    context.w(url, W*0.5, H*0.9, { underline: true });
     board.on("touchend", function(e) {
-        if (e.y > H*0.5) window.open("demo" + index + ".html");
+        if (e.y > H*0.5) window.open(url);
     });
 };
 
@@ -475,13 +497,13 @@ var Color = {
 
 enchant();
 
-var W = 800*0.8;
-var H = 450*0.8;
+var W = 800*0.9;
+var H = 450*0.9;
 var BOARD_BG;
 var core;
 var layer0;
 var layer1;
-var kuma;
+var timer;
 
 window.onload = function() {
     core = new Core(800, 450);
@@ -524,6 +546,7 @@ window.onload = function() {
             if (current >= PAGES.length-1) return;
 
             if (boards[0]) layer0.removeChild(boards[0]);
+            if (boards[1].onexit) boards[1].onexit();
             boards[1].tl.moveBy(-800, 0, 15, enchant.Easing.QUAD_EASEINOUT);
             if (boards[2]) {
                 boards[2].tl
@@ -531,7 +554,7 @@ window.onload = function() {
                     .and()
                     .rotateBy(-360, 15, enchant.Easing.BACK_EASEOUT)
                     .then(function() {
-                        if (this.entered) this.entered();
+                        if (this.onentered) this.onentered();
                     });
             }
 
@@ -543,19 +566,23 @@ window.onload = function() {
 
             location.hash = "#" + current;
 
-            kuma.scaleX = -3;
+            timer.scaleX = -3;
         });
 
         core.on("leftbuttonup", function() {
             if (current <= 0) return;
 
             if (boards[2]) layer0.removeChild(boards[2]);
+            if (boards[1].onexit) boards[1].onexit();
             boards[1].tl.moveBy(800, 0, 15, enchant.Easing.QUAD_EASEINOUT);
             if (boards[0]) {
                 boards[0].tl
                     .moveBy(800, 0, 15, enchant.Easing.BACK_EASEOUT)
                     .and()
                     .rotateBy(360, 15, enchant.Easing.BACK_EASEOUT)
+                    .then(function() {
+                        if (this.onentered) this.onentered();
+                    });
                 ;
             }
 
@@ -567,27 +594,27 @@ window.onload = function() {
 
             location.hash = "#" + current;
 
-            kuma.scaleX = 3;
+            timer.scaleX = 3;
         });
 
-        kuma = new Sprite(32, 32);
-        kuma.scale(-3, 3);
-        kuma.y = 450 - 70;
-        kuma.image = core.assets["hiyoco_nomal_full.png"];
-        kuma.on("enterframe", function() {
+        timer = new Sprite(32, 32);
+        timer.scale(-3, 3);
+        timer.y = 450 - 64;
+        timer.image = core.assets["hiyoco_nomal_full.png"];
+        timer.on("enterframe", function() {
             this.x = (800-32) * current / PAGES.length;
+        });
+        timer.walkMotion = function() {
+            this.frame = ~~(this.age / 20) % 2 + 1;
             if (Math.random() < 0.001) {
                 this.tl
                     .moveBy(0, -360, 10, enchant.Easing.QUAD_EASEOUT)
                     .moveBy(0, +360, 10, enchant.Easing.QUAD_EASEIN)
                 ;
             }
-        });
-        kuma.walkMotion = function() {
-            this.frame = ~~(this.age / 20) % 2 + 1;
         };
-        kuma.on("enterframe", kuma.walkMotion);
-        layer1.addChild(kuma);
+        timer.on("enterframe", timer.walkMotion);
+        layer1.addChild(timer);
     };
     core.start();
 };
