@@ -79,13 +79,13 @@ var PAGES = [
     function(c, b) {
         c.f(40, Color.black);
         c.w("『爆発』", W*0.5, H*0.2);
-        b.image.draw(core.assets["images/effect0.png"], W*0.5-80*3, H*0.5-16*3, 80*6, 16*6);
+        b.image.draw(assets["images/effect0.png"], W*0.5-80*3, H*0.5-16*3, 80*6, 16*6);
     },
 
     function(c, b) {
         c.f(40, Color.black);
         c.w("『ビーム』", W*0.5, H*0.2);
-        b.image.draw(core.assets["images/icon0.png"], 0, 48, 128, 16, W*0.5-128*4/2, H*0.5-16*4/2, 128*4, 16*4);
+        b.image.draw(assets["images/icon0.png"], 0, 48, 128, 16, W*0.5-128*4/2, H*0.5-16*4/2, 128*4, 16*4);
     },
 
     function(c, b) {
@@ -237,7 +237,7 @@ var PAGES = [
         b.image.context.fillRect(20, 60, W-40, H-120);
         b.image.context.globalAlpha = 0.3;
         for (var i = 0; i < 10; i++) {
-            b.image.draw(core.assets["images/chara1.png"],
+            b.image.draw(assets["images/chara1.png"],
                 32*(i%2+1), 32*0, 32, 32,
                 W*0.5-180+(i*20), H*0.5-100, 200, 200
             );
@@ -262,7 +262,7 @@ var PAGES = [
         b.image.context.globalCompositeOperation = "lighter";
         b.image.context.globalAlpha = 0.5;
         for (var i = 0; i < 10; i++) {
-            b.image.draw(core.assets["images/chara1.png"],
+            b.image.draw(assets["images/chara1.png"],
                 32*(i%2+1), 32*0, 32, 32,
                 W*0.5-180+(i*20), H*0.5-100, 200, 200
             );
@@ -273,11 +273,11 @@ var PAGES = [
         c.f(40, Color.blue);
         c.w("ここでさきほどの例", W*0.5, H*0.2);
         c.w("これを → これへ", W*0.5, H*0.3);
-        b.image.draw(core.assets["images/chara1.png"],
+        b.image.draw(assets["images/chara1.png"],
             32*0, 32*0, 32, 20,
             W*0.5-32*6/2-100, H*0.6-20*6/2, 32*6, 20*6
         );
-        b.image.draw(core.assets["effect/particle.png"],
+        b.image.draw(assets["effect/particle.png"],
             32*0, 32*0, 32, 32,
             W*0.5-32*6/2+100, H*0.6-32*6/2, 32*6, 32*6
         );
@@ -292,7 +292,7 @@ var PAGES = [
     function(c, b) {
         c.f(40, Color.blue);
         c.w("でもこれはどうやって作るの？", W*0.5, H*0.3);
-        b.image.draw(core.assets["effect/particle.png"],
+        b.image.draw(assets["effect/particle.png"],
             32*0, 32*0, 32, 32,
             W*0.5-32*6/2, H*0.6-32*6/2, 32*6, 32*6
         );
@@ -408,7 +408,7 @@ var PAGES = [
     function(c, b) {
         c.f(40, Color.red);
         c.w("この部分→", W*0.3, H*0.15);
-        b.image.draw(core.assets["laser.jpg"], W*0.7-319/2*0.8, H*0.5-425/2*0.8, 319*0.8, 425*0.8);
+        b.image.draw(assets["laser.jpg"], W*0.7-319/2*0.8, H*0.5-425/2*0.8, 319*0.8, 425*0.8);
         demo(c, b, 10);
     },
 
@@ -416,7 +416,7 @@ var PAGES = [
         c.f(30, Color.blue);
         c.w("こういうトゲトゲの図形を", W*0.5, H*0.2);
         c.w("すこしずつズラしながらたくさん重ねる", W*0.5, H*0.3);
-        b.image.draw(core.assets["demo10_1.png"], W*0.5-453/2*0.4, H*0.6-417/2*0.4, 453*0.4, 417*0.4);
+        b.image.draw(assets["demo10_1.png"], W*0.5-453/2*0.4, H*0.6-417/2*0.4, 453*0.4, 417*0.4);
     },
 
     function(c, b) {
@@ -427,7 +427,7 @@ var PAGES = [
     function(c, b) {
         c.f(40, Color.red);
         c.w("この部分", W*0.5, H*0.15);
-        b.image.draw(core.assets["demo9_1.png"], W*0.5-199/2*1.4, H*0.6-177/2*1.4, 199*1.4, 177*1.4);
+        b.image.draw(assets["demo9_1.png"], W*0.5-199/2*1.4, H*0.6-177/2*1.4, 199*1.4, 177*1.4);
         demo(c, b, 9);
     },
 
@@ -435,11 +435,11 @@ var PAGES = [
         c.f(20, Color.blue);
         c.w("一点から放射状にパーティクルを移動させ軌跡を描画", W*0.5, H*0.1);
         c.w("サイズ小→大→小", W*0.5, H*0.2);
-        b.image.draw(core.assets["demo9_2.png"], W*0.5-960/2*0.4, H*0.6-720/2*0.4, 960*0.4, 720*0.4);
+        b.image.draw(assets["demo9_2.png"], W*0.5-960/2*0.4, H*0.6-720/2*0.4, 960*0.4, 720*0.4);
     },
 
     function(c, b) {
-        c.f(40, Color.red);
+        c.f(40, Color.green);
         c.w("まとめ");
     },
 
@@ -450,6 +450,62 @@ var PAGES = [
         c.w("1. プログラムで描いて素材を作ろう！");
         c.w("2. 作った素材は加算合成を使って表示しよう！");
         c.w("3. たくさん作ってゲームをカッコよくしよう！");
+    },
+
+    function(c, b) {
+        c.f(40, Color.green);
+        c.w("余談");
+    },
+
+    function(c, b) {
+        c.f(50, Color.blue);
+        c.w("tmlib.js");
+    },
+
+    function(c, b) {
+        c.f(30, Color.red);
+        c.w("Canvas関係の便利機能が豊富！");
+    },
+
+    function(c, b) {
+        c.textAlign = "left";
+        c.prevX = W*0.05;
+        c.prevY = 0;
+        c.lineHeight = H*0.08;
+        c.f(22, Color.black);
+        c.w("var surface = new Surface(400, 400);");
+        c.w("var context = surface.context;");
+        c.w("var gradient = context.createRadialGradient(200, 200, 0, 200, 200, 200);");
+        c.w("gradient.addColorStop(0.0, 'rgba(255, 255, 255, 1.0)');");
+        c.w("gradient.addColorStop(0.0, 'rgba(  0,   0, 255, 0.0)');");
+        c.w("context.fillStyle = gradient;");
+        c.w("context.fillRect(0, 0, 400, 400);");
+        c.w("window.open(surface.toDataURL());");
+    },
+
+    function(c, b) {
+        c.textAlign = "left";
+        c.prevX = W*0.05;
+        c.prevY = 0;
+        c.lineHeight = H*0.08;
+        c.f(22, Color.black);
+        c.w("tm.graphics.Canvas()");
+        c.w("    .resize(400, 400)");
+        c.w("    .setFillStyle(");
+        c.w("        tm.graphics.RadialGradient(200, 200, 0, 200, 200, 200)");
+        c.w("            .addColorStopList([");
+        c.w("                { offset: 0.0, color: 'rgba(255, 255, 255, 1.0)' },");
+        c.w("                { offset: 1.0, color: 'rgba(  0,   0, 255, 0.0)' },");
+        c.w("            ])");
+        c.w("            .toStyle()");
+        c.w("    )");
+        c.w("    .fillRect(0, 0, 400, 400)");
+        c.w("    .saveAsImage();");
+    },
+
+    function(c, b) {
+        c.f(30, Color.red);
+        c.w("tmlib.js使おう！");
     },
 
     function(c, b) {
@@ -474,10 +530,6 @@ var PAGES = [
 
 ];
 
-var demo = function(context, board, index) {
-    link(context, board, "demo" + index + ".html");
-};
-
 var link = function(context, board, url) {
     context.textAlign = "center";
     context.textBaseline = "middle";
@@ -486,6 +538,10 @@ var link = function(context, board, url) {
     board.on("touchend", function(e) {
         if (e.y > H*0.5) window.open(url);
     });
+};
+
+var demo = function(context, board, index) {
+    link(context, board, "demo" + index + ".html");
 };
 
 var Color = {
@@ -499,14 +555,11 @@ enchant();
 
 var W = 800*0.9;
 var H = 450*0.9;
-var BOARD_BG;
-var core;
-var layer0;
-var layer1;
+var assets;
 var timer;
 
 window.onload = function() {
-    core = new Core(800, 450);
+    var core = new Core(W/0.9, H/0.9);
     core.preload([
         "hiyoco_nomal_full.png",
         "images/chara1.png",
@@ -519,30 +572,84 @@ window.onload = function() {
         "demo10_1.png",
     ]);
 
-    BOARD_BG = (function() {
-        var surface = new Surface(W, H);
-        var gradient = surface.context.createLinearGradient(0, 0, W, H);
-        gradient.addColorStop(0.0, "#444");
-        gradient.addColorStop(0.3, "#fff");
-        gradient.addColorStop(0.7, "#fff");
-        gradient.addColorStop(1.0, "#444");
-        surface.context.fillStyle = gradient;
-        surface.context.fillRect(0, 0, W, H);
-        return surface;
-    })();
-
     core.onload = function() {
+        assets = core.assets;
 
-        core.rootScene.backgroundColor = "black";
-        layer0 = new Group();
-        layer1 = new Group();
-        core.rootScene.addChild(layer0);
-        core.rootScene.addChild(layer1);
+        this.rootScene.backgroundColor = "black";
+        var layer0 = new Group();
+        var layer1 = new Group();
+        this.rootScene.addChild(layer0);
+        this.rootScene.addChild(layer1);
+
+        var boardImage = (function() {
+            var surface = new Surface(W, H);
+            var gradient = surface.context.createLinearGradient(0, 0, W, H);
+            gradient.addColorStop(0.0, "#444");
+            gradient.addColorStop(0.3, "#fff");
+            gradient.addColorStop(0.7, "#fff");
+            gradient.addColorStop(1.0, "#444");
+            surface.context.fillStyle = gradient;
+            surface.context.fillRect(0, 0, W, H);
+            return surface;
+        })();
+        var createBoard = function(page, x) {
+            if (page < 0 || PAGES.length-1 < page) {
+                return;
+            }
+
+            var board = new Sprite(W, H);
+            board.x = (800-W)/2 + ~~x;
+            board.y = (450-H)/2;
+            board.image = boardImage.clone();
+            board.image.context.fillStyle = "black";
+            board.image.context.textAlign = "center";
+            board.image.context.textBaseline = "middle";
+            board.image.context.shadowColor = "rgba(0,0,0,0.4)";
+            board.image.context.shadowOffsetX = 5;
+            board.image.context.shadowOffsetY = 5;
+            board.image.context.shadowBlur = 5;
+
+            board.image.context.f = function(size, color) {
+                this.fontSize = size = size || 20;
+                color = color || "black";
+                this.fillStyle = color;
+                this.font = size + "px 'S2G-Uni-font-PRO'";
+            };
+            board.image.context.prevX = W*0.5;
+            board.image.context.prevY = H*0.4;
+            board.image.context.lineHeight = H*0.1;
+            board.image.context.w = function(text, x, y, option) {
+                x = x || this.prevX;
+                y = y || this.prevY + this.lineHeight;
+                this.fillText(text, x, y);
+                this.prevX = x;
+                this.prevY = y;
+
+                if (option && option.underline) {
+                    var metrics = this.measureText(text);
+                    this.fillRect(x - metrics.width/2-1, y + this.fontSize/2, metrics.width+2, 1);
+                }
+            };
+            PAGES[page](board.image.context, board);
+
+            board.rotation = -4 + Math.random() * 4*2;
+
+            board.on("touchend", function(e) {
+                if (e.y > H*0.5) return;
+
+                if (e.x < W*0.5) core.dispatchEvent(new Event("leftbuttonup"));
+                else             core.dispatchEvent(new Event("rightbuttonup"));
+            });
+
+            layer0.addChild(board);
+            return board;
+        };
 
         var current = ~~location.hash.substring(1);
-        var boards = [ createNew(current-1, -800), createNew(current), createNew(current+1, 800) ];
+        var boards = [ createBoard(current-1, -800), createBoard(current), createBoard(current+1, 800) ];
 
-        core.on("rightbuttonup", function() {
+        // 次へ
+        this.on("rightbuttonup", function() {
             if (current >= PAGES.length-1) return;
 
             if (boards[0]) layer0.removeChild(boards[0]);
@@ -560,16 +667,16 @@ window.onload = function() {
 
             current++;
 
-            boards[0] = boards[1];
-            boards[1] = boards[2];
-            boards[2] = createNew(current+1, 800);
+            boards.shift();
+            boards.push(createBoard(current+1, 800));
 
             location.hash = "#" + current;
 
             timer.scaleX = -3;
         });
 
-        core.on("leftbuttonup", function() {
+        // 前へ
+        this.on("leftbuttonup", function() {
             if (current <= 0) return;
 
             if (boards[2]) layer0.removeChild(boards[2]);
@@ -588,15 +695,15 @@ window.onload = function() {
 
             current--;
 
-            boards[2] = boards[1];
-            boards[1] = boards[0];
-            boards[0] = createNew(current-1, -800);
+            boards.pop();
+            boards.unshift(createBoard(current-1, -800));
 
             location.hash = "#" + current;
 
             timer.scaleX = 3;
         });
 
+        // タイマーひよこ
         timer = new Sprite(32, 32);
         timer.scale(-3, 3);
         timer.y = 450 - 64;
@@ -615,60 +722,7 @@ window.onload = function() {
         };
         timer.on("enterframe", timer.walkMotion);
         layer1.addChild(timer);
+
     };
     core.start();
-};
-
-var createNew = function(page, x) {
-    if (page < 0 || PAGES.length-1 < page) {
-        return;
-    }
-
-    var board = new Sprite(W, H);
-    board.x = (800-W)/2 + ~~x;
-    board.y = (450-H)/2;
-    board.image = BOARD_BG.clone();
-    board.image.context.fillStyle = "black";
-    board.image.context.textAlign = "center";
-    board.image.context.textBaseline = "middle";
-    board.image.context.shadowColor = "rgba(0,0,0,0.4)";
-    board.image.context.shadowOffsetX = 5;
-    board.image.context.shadowOffsetY = 5;
-    board.image.context.shadowBlur = 5;
-
-    board.image.context.f = function(size, color) {
-        this.fontSize = size = size || 20;
-        color = color || "black";
-        this.fillStyle = color;
-        this.font = size + "px 'S2G-Uni-font-PRO'";
-    };
-    board.image.context.prevX = W*0.5;
-    board.image.context.prevY = H*0.4;
-    board.image.context.lineHeight = H*0.1;
-    board.image.context.w = function(text, x, y, option) {
-        x = x || this.prevX;
-        y = y || this.prevY + this.lineHeight;
-        this.fillText(text, x, y);
-        this.prevX = x;
-        this.prevY = y;
-
-        if (option && option.underline) {
-            var metrics = this.measureText(text);
-            this.fillRect(x - metrics.width/2-1, y + this.fontSize/2, metrics.width+2, 1);
-        }
-    };
-    PAGES[page](board.image.context, board);
-
-    board.rotation = -4 + Math.random() * 4*2;
-
-    layer0.addChild(board);
-
-    board.on("touchend", function(e) {
-        if (e.y > H*0.5) return;
-
-        if (e.x < W*0.5) core.dispatchEvent(new Event("leftbuttonup"));
-        else             core.dispatchEvent(new Event("rightbuttonup"));
-    });
-
-    return board;
 };
