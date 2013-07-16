@@ -1,0 +1,63 @@
+<html>
+<head>
+<script src="../libs/enchant.js"></script>
+<script>
+enchant();
+window.onload = function() {
+
+    var core = new Core(800, 450);
+    core.onload = function() {
+
+        var sprite = new Sprite(core.width, core.height);
+        core.rootScene.addChild(sprite);
+        sprite.image = new Surface(sprite.width, sprite.height);
+        var context = sprite.image.context;
+
+        context.drawParticle = function(x, y, radius, color) {
+            this.globalCompositeOperation = "lighter";
+            var gradient = this.createRadialGradient(x, y, 0, x, y, radius);
+            gradient.addColorStop(0, "rgba(255,255,255," + color[3] + ")");
+            gradient.addColorStop(1, "rgba(" + ~~color[0] + "," + ~~color[1] + "," + ~~color[2] + ",0.0)");
+            this.fillStyle = gradient;
+            this.fillRect(x - radius, y - radius, radius * 2, radius * 2);
+        };
+
+        context.drawBezierCurve = function(points, split, lineWidth, color) {
+            var b = function(p, ratio) {
+                return p.length === 1 ? p[0] : arguments.callee(p.slice(0, p.length-1).map(function(vi, i) {
+                    return vi.map(function(vj, j) {
+                        return vj + (p[i+1][j] - vj) * ratio;
+                    });
+                }), ratio);
+            };
+
+            for (var i = 0; i < split; i++) {
+                var point = b(points, i/split);
+                this.drawParticle(point[0], point[1], lineWidth/2, color);
+            }
+        };
+
+        var points0 = [];
+        points0.push([0, core.height/2]);
+        for (var i = 0; i < 5; i++) points0.push([Math.random()*core.width, Math.random()*core.height]);
+        points0.push([core.width, core.height/2]);
+
+        var points1 = [];
+        points1.push([0, core.height/2]);
+        for (var i = 0; i < 5; i++) points1.push([Math.random()*core.width, Math.random()*core.height]);
+        points1.push([core.width, core.height/2]);
+
+        sprite.on("enterframe", function() {
+            this.image.clear();
+            context.drawBezierCurve(points0, 1000, 10, [ 0, 255, 255, 0.2 ]);
+            context.drawBezierCurve(points1, 1000, 10, [ 255, 0, 255, 0.2 ]);
+        });
+    };
+    core.start();
+
+};
+</script>
+</head>
+<body style="background:black;margin:0">
+</body>
+</html>
