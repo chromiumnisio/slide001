@@ -12,18 +12,26 @@ var PAGES = [
         c.w("自己紹介");
     },
 
-    function(c) {
+    function(c, b) {
         c.textAlign = "left";
         c.f(25, Color.black);
         c.prevX = W*0.03;
         c.prevY = 0;
-        c.lineHeight = H*0.14;
+        c.lineHeight = H*0.08;
         c.w("var 俺 = {");
-        c.w("    '名前': 'Chromium西尾',");
-        c.w("    '職業': 'プログラマー',");
-        c.w("    '趣味': [ 'JavaScript', 'ビール', 'STG', 'プリキュア' ],");
-        c.w("    'enchant.js歴': '2年'");
+        c.w("        '名前': 'Chromium西尾',");
+        c.w("        '職業': 'ゲームとか作る人',");
+        c.w("        '趣味': [");
+        c.w("                'JavaScript',");
+        c.w("                'ビール',");
+        c.w("                'STG',");
+        c.f(25, Color.pink);
+        c.w("                'プリキュア',");
+        c.f(25, Color.black);
+        c.w("        ],");
+        c.w("        'enchant.js歴': '2年'");
         c.w("};");
+        link(c, b, "http://connpass.com/event/2772/");
     },
 
     function(c) {
@@ -548,6 +556,7 @@ var Color = {
     red: "#f33",
     green: "#083",
     blue: "#24f",
+    pink: "#f8a",
     black: "#222",
 };
 
