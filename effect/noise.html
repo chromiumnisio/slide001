@@ -36,21 +36,32 @@ window.onload = function() {
             if (interval < 1) { 
                 return null;
             }
+
+            interval = ~~interval;
+
             var data = [];
             var a = Math.random();
             var b;
-            for (var i = 0; i < dataSize; i += ~~interval) {
+            var i;
+            for (i = 0; i < dataSize; i += interval) {
                 b = Math.random();
                 for (var j = 0; j < interval; j++) {
                     data[i+j] = cosineInterpolation(a, b, j/interval);
                 }
                 a = b;
             }
+
+            a = data[dataSize-interval];
+            b = data[0];
+            for (var j = 0; j < interval; j++) {
+                data[dataSize-interval+j] = cosineInterpolation(a, b, j/interval);
+            }
+
             return data;
         };
 
         var layers = [];
-        for (var i = 0, b = 2; i < 10; i++, b *= 2) {
+        for (var i = 0, b = Math.pow(2, 4); i < 8; i++, b *= 2) {
             var d = createData(dataSize / b);
             if (d === null) {
                 break;
@@ -67,23 +78,35 @@ window.onload = function() {
         return result;
     };
 
-    var data = noise(360);
+    var data = noise(300);
+
+    for (var i = 0; i < data.length-1; i++) {
+        line("white", i, data[i]*100, i+1, data[i+1]*100);
+    }
+    for (var i = 0; i < data.length-1; i++) {
+        line("white", i+data.length-1, data[i]*100, i+1+data.length-1, data[i+1]*100);
+    }
+
     var p = [];
     for (var i = 0; i < data.length; i++) {
         p[i] = {
-            x: 200,
-            y: 200,
-            d: Math.PI*2 * i/360,
-            s: data[i]*data[i]*10,
+            x: 400,
+            y: 400,
+            d: Math.PI*2 * i/data.length,
+            s: data[i]*10,
+            alpha: 0.5,
+            radius: 100,
         };
     }
 
     window.setInterval(function() {
         context.clearRect(0, 0, canvas.width, canvas.height);
         for (var i = 0; i < p.length; i++) {
-            particle([0, 0, 255, 0.1], p[i].x, p[i].y, 50);
+            particle([0, 0, 255, p[i].alpha], p[i].x, p[i].y, p[i].radius);
             p[i].x += Math.cos(p[i].d) * p[i].s;
             p[i].y += Math.sin(p[i].d) * p[i].s;
+            p[i].s *= 0.99;
+            p[i].alpha *= 0.9;
         }
     }, 1000/30);
 };
